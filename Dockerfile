@@ -1,15 +1,9 @@
-FROM python:3.6
+FROM ubuntu:16.04
 
-# Create app directory
-WORKDIR /app
+RUN apt-get update && apt-get install -y python python-pip
 
-# Install app dependencies
-COPY src/requirements.txt ./
+RUN pip install flask
 
-RUN pip install -r requirements.txt
+COPY app.py /opt/
 
-# Bundle app source
-COPY src /app
-
-EXPOSE 8080
-CMD [ "python", "server.py" ]
+ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0
