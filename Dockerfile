@@ -1,9 +1,17 @@
-FROM ubuntu:16.04
+# Base image
+FROM python:3.9
 
-RUN apt-get update && apt-get install -y python python-pip
+# Set working directory
+WORKDIR /app
 
-RUN pip install flask
+# Copy requirements file
+COPY requirements.txt .
 
-COPY app.py /opt/
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-ENTRYPOINT FLASK_APP=/opt/app.py flask run --host=0.0.0.0
+# Copy source code
+COPY app.py .
+
+# Set the command to run when the container starts
+CMD ["python", "app.py"]
